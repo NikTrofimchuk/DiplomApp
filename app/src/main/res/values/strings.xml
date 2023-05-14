@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">DiplomApp</string>
+
+    <string name="graphs">Graphs</string>
+    <string name="work">Work</string>
+    <string name="profiles">Profiles</string>
+
+    <string name="WiFi_status">Wi-Fi status:</string>
+    <string name="Instrument_status">Instrument_status:</string>
+    <string name="Power">Power, W</string>
+
+</resources>

@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    tools:context=".ui.fragments.HomeFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <SeekBar
+            android:id="@+id/tempBar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="200dp"
+            android:max="600"
+            android:progress="0"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="232dp"
+            android:text="TextView"
+            android:textSize="60sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <RadioGroup
+            android:id="@+id/radioGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@+id/tempBar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <RadioButton
+                android:id="@+id/button"
+                android:layout_width="70dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="0dp"
+                android:layout_marginRight="0dp"
+                android:background="@drawable/my_button_selector"
+                android:button="@null"
+                android:paddingLeft="4dp"
+                android:paddingTop="3dp"
+                android:paddingRight="4dp"
+                android:text="10"
+                android:textAlignment="center"
+                android:textColor="@drawable/my_button_text_selector"
+                app:cornerRadius="0dp" />
+
+            <RadioButton
+                android:id="@+id/button2"
+                android:layout_width="70dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="0dp"
+                android:layout_marginRight="0dp"
+                android:background="@drawable/my_button_selector"
+                android:button="@null"
+                android:paddingLeft="4dp"
+                android:paddingTop="3dp"
+                android:paddingRight="4dp"
+                android:text="20"
+                android:textAlignment="center"
+                android:textColor="@drawable/my_button_text_selector"
+                app:cornerRadius="0dp" />
+
+            <RadioButton
+                android:id="@+id/button3"
+                android:layout_width="70dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="0dp"
+                android:layout_marginRight="0dp"
+                android:background="@drawable/my_button_selector"
+                android:button="@null"
+                android:paddingLeft="4dp"
+                android:paddingTop="3dp"
+                android:paddingRight="4dp"
+                android:text="30"
+                android:textAlignment="center"
+                android:textColor="@drawable/my_button_text_selector"
+                app:cornerRadius="0dp" />
+
+            <RadioButton
+                android:id="@+id/button4"
+                android:layout_width="70dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="0dp"
+                android:layout_marginRight="0dp"
+                android:background="@drawable/my_button_selector"
+                android:button="@null"
+                android:paddingLeft="4dp"
+                android:paddingTop="3dp"
+                android:paddingRight="4dp"
+                android:text="40"
+                android:textAlignment="center"
+                android:textColor="@drawable/my_button_text_selector"
+                app:cornerRadius="0dp" />
+
+            <RadioButton
+                android:id="@+id/button5"
+                android:layout_width="70dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="0dp"
+                android:layout_marginRight="0dp"
+                android:background="@drawable/my_button_selector"
+                android:button="@null"
+                android:checked="true"
+                android:paddingLeft="4dp"
+                android:paddingTop="3dp"
+                android:paddingRight="4dp"
+                android:text="50"
+                android:textAlignment="center"
+                android:textColor="@drawable/my_button_text_selector"
+                app:cornerRadius="0dp" />
+        </RadioGroup>
+
+        <ToggleButton
+            android:id="@+id/toggleButton4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="52dp"
+            android:text="ToggleButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.629"
+            app:layout_constraintStart_toEndOf="@+id/imageButton"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/imageButton"
+            android:layout_width="62dp"
+            android:layout_height="54dp"
+            android:layout_marginStart="80dp"
+            android:layout_marginTop="52dp"
+            android:src="@drawable/ic_baseline_wifi_off_24"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/WiFi_status"
+            app:layout_constraintBottom_toTopOf="@+id/imageButton"
+            app:layout_constraintEnd_toEndOf="@+id/imageButton"
+            app:layout_constraintStart_toStartOf="@+id/imageButton" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Instrument_status"
+            app:layout_constraintBottom_toTopOf="@+id/toggleButton4"
+            app:layout_constraintEnd_toEndOf="@+id/toggleButton4"
+            app:layout_constraintStart_toStartOf="@+id/toggleButton4" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="@string/Power"
+            app:layout_constraintBottom_toTopOf="@+id/radioGroup"
+            app:layout_constraintEnd_toEndOf="@+id/radioGroup"
+            app:layout_constraintStart_toStartOf="@+id/radioGroup" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Пайка</string>
+
+    <string name="graphs">Графики</string>
+    <string name="work">Пайка</string>
+    <string name="WiFi_status">Статус Wi-FI:</string>
+    <string name="Instrument_status">Статус паяльника:</string>
+    <string name="profiles">Шаблоны</string>
+    <string name="Power">Мощность нагревателя, Вт</string>
+</resources>

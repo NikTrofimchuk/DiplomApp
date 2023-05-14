@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/my_nav"
+    app:startDestination="@id/navigation_home">
+
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="com.nik.diplomapp.ui.fragments.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" />
+    <fragment
+        android:id="@+id/navigation_graphs"
+        android:name="com.nik.diplomapp.ui.fragments.GraphsFragment"
+        android:label="fragment_graphs"
+        tools:layout="@layout/fragment_graphs" />
+    <fragment
+        android:id="@+id/navigation_profiles"
+        android:name="com.nik.diplomapp.ui.fragments.ProfilesFragment"
+        android:label="fragment_profiles"
+        tools:layout="@layout/fragment_profiles" />
+</navigation>
