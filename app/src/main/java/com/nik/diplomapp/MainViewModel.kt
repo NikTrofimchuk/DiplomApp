@@ -6,6 +6,8 @@ import android.net.wifi.WifiConfiguration
 import android.net.wifi.WifiManager
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.nik.diplomapp.utils.Constants.Companion.WiFi_PASSWORD
 import com.nik.diplomapp.utils.Constants.Companion.WiFi_SSID
@@ -21,6 +23,11 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private lateinit var wifiManager: WifiManager
 
     private val client = OkHttpClient()
+
+    private val _temperatureLiveData = MutableLiveData<String?>()
+    val temperatureLiveData: MutableLiveData<String?>
+        get() = _temperatureLiveData
+
 
     fun setConnection(){
         viewModelScope.launch {
@@ -94,7 +101,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         val client = OkHttpClient()
 
         val request = Request.Builder()
-            .url("http://192.168.4.1/temperature")
+            .url("http://192.168.4.1/currenttemp")
             .build()
 
         client.newCall(request).enqueue(object : Callback {
@@ -105,9 +112,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
             @SuppressLint("SetTextI18n")
             override fun onResponse(call: Call, response: Response) {
-                val temperature = response.header("value")
-                Log.d("Response", "Response Body: $temperature")
+                val responseBody = response.body?.string() // Получение содержимого ответа в виде строки
+                Log.d("Response", "Response Body: $responseBody")
                 // Обработка полученного значения температуры
+                _temperatureLiveData.postValue(responseBody)
             }
         })
     }

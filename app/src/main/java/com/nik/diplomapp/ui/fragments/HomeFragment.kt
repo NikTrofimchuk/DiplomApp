@@ -40,19 +40,19 @@ class HomeFragment : Fragment() {
             group.findViewById<RadioButton>(checkedId)
             when (checkedId) {
                 R.id.btn_10W -> {
-                    viewModel.makeRequest("10W")
+                    viewModel.makeRequest("power?value=51")
                 }
                 R.id.btn_20W -> {
-                    viewModel.makeRequest("20W")
+                    viewModel.makeRequest("power?value=102")
                 }
                 R.id.btn_30W -> {
-                    viewModel.makeRequest("30W")
+                    viewModel.makeRequest("power?value=153")
                 }
                 R.id.btn_40W -> {
-                    viewModel.makeRequest("40W")
+                    viewModel.makeRequest("power?value=204")
                 }
                 R.id.btn_50W -> {
-                    viewModel.makeRequest("50W")
+                    viewModel.makeRequest("power?value=255")
                 }
             }
         }
@@ -62,12 +62,16 @@ class HomeFragment : Fragment() {
         binding.setTimeBtn.setOnClickListener(){
             findNavController().navigate(R.id.action_homeFragment_to_timerBottomSheet)
         }
+        viewModel.temperatureLiveData.observe(viewLifecycleOwner) { temperature ->
+            // Обновление TextView с новым значением температуры
+            binding.tempTv.text = temperature + " °C"
+        }
     }
     private fun startTemperatureUpdates() {
         Thread {
             while (true) {
                 viewModel.requestTemperature()
-                Thread.sleep(500) // Задержка между запросами в миллисекундах
+                Thread.sleep(1000) // Задержка между запросами в миллисекундах
             }
         }.start()
     }
