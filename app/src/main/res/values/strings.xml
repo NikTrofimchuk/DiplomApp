@@ -4,9 +4,21 @@
     <string name="graphs">Graphs</string>
     <string name="work">Work</string>
     <string name="profiles">Profiles</string>
+    <string name="calibration">Calibration</string>
 
     <string name="WiFi_status">Wi-Fi status:</string>
     <string name="Instrument_status">Instrument_status:</string>
     <string name="Power">Power, W</string>
+
+    <string name="add_in_templates">Create template</string>
+
+    <string name="Choose_temp">Select temperature:</string>
+    <string name="Timer">Select time:</string>
+    <string name="Timer_tv">Timer Settings</string>
+
+    <string name="Confirm">Confirm</string>
+    <string name="Connected">Connected</string>
+    <string name="Not_connected">No Connection</string>
+
 
 </resources>

@@ -8,4 +8,12 @@
     <string name="Instrument_status">Статус паяльника:</string>
     <string name="profiles">Шаблоны</string>
     <string name="Power">Мощность нагревателя, Вт</string>
+    <string name="add_in_templates">Создать шаблон</string>
+    <string name="Choose_temp">Выберите температуру:</string>
+    <string name="Timer">Выберите продолжительность нагрева:</string>
+    <string name="Confirm">Подтвердить</string>
+    <string name="Timer_tv">Настройки таймера</string>
+    <string name="Connected">Подключено</string>
+    <string name="Not_connected">Не подключено</string>
+    <string name="calibration">Калибровка</string>
 </resources>

@@ -9,7 +9,11 @@
         android:id="@+id/navigation_home"
         android:name="com.nik.diplomapp.ui.fragments.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_timerBottomSheet"
+            app:destination="@id/timerBottomSheet" />
+    </fragment>
     <fragment
         android:id="@+id/navigation_graphs"
         android:name="com.nik.diplomapp.ui.fragments.GraphsFragment"
@@ -20,4 +24,18 @@
         android:name="com.nik.diplomapp.ui.fragments.ProfilesFragment"
         android:label="fragment_profiles"
         tools:layout="@layout/fragment_profiles" />
+    <fragment
+        android:id="@+id/navigation_calibration"
+        android:name="com.nik.diplomapp.ui.fragments.CalibrationFragment"
+        android:label="fragment_calibration"
+        tools:layout="@layout/fragment_calibration" />
+    <dialog
+        android:id="@+id/timerBottomSheet"
+        android:name="com.nik.diplomapp.ui.fragments.TimerBottomSheet"
+        android:label="timer_bottom_sheet"
+        tools:layout="@layout/timer_bottom_sheet" >
+        <action
+            android:id="@+id/action_timerBottomSheet_to_homeFragment"
+            app:destination="@id/navigation_home" />
+    </dialog>
 </navigation>

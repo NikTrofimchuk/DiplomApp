@@ -51,4 +51,6 @@ dependencies {
     implementation 'androidx.navigation:navigation-ui-ktx:2.5.3'
 
     implementation 'com.squareup.okhttp3:okhttp:4.9.3'
+
+    implementation files('libs/achartengine-1.2.0.jar')
 }
