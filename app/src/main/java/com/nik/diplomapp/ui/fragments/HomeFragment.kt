@@ -1,11 +1,14 @@
 package com.nik.diplomapp.ui.fragments
 
 import android.os.Bundle
+import android.util.Log
+import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioButton
+import android.widget.SeekBar
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
@@ -22,7 +25,6 @@ class HomeFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
-        startTemperatureUpdates()
     }
 
     override fun onCreateView(
@@ -63,16 +65,37 @@ class HomeFragment : Fragment() {
             findNavController().navigate(R.id.action_homeFragment_to_timerBottomSheet)
         }
         viewModel.temperatureLiveData.observe(viewLifecycleOwner) { temperature ->
-            // Обновление TextView с новым значением температуры
+            Log.d("Temp updated", temperature.toString())
             binding.tempTv.text = temperature + " °C"
         }
-    }
-    private fun startTemperatureUpdates() {
-        Thread {
-            while (true) {
-                viewModel.requestTemperature()
-                Thread.sleep(1000) // Задержка между запросами в миллисекундах
+
+        binding.tempBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                val thumbOffset = seekBar?.thumbOffset ?: 0
+                val thumb = seekBar?.thumb
+                val thumbBounds = thumb?.bounds
+
+                // Рассчитываем положение текста под ползунком
+                val textX = thumbBounds?.left?.toFloat() ?: (0f + thumbOffset.toFloat())
+
+                // Обновляем позицию текстового поля
+                if(textX > 100)
+                    binding.fixedTempTv.x = textX + 19
+                else
+                    binding.fixedTempTv.x = textX + 22
+
+                // Обновляем значение в текстовом поле
+                binding.fixedTempTv.text = progress.toString()
             }
-        }.start()
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
+                // Метод вызывается при начале перемещения ползунка
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                viewModel.makeRequest("fixtemp?value="+binding.tempBar.progress.toString())
+                Log.d("Request", "fixtemp?value="+binding.tempBar.progress.toString())
+            }
+        })
     }
 }

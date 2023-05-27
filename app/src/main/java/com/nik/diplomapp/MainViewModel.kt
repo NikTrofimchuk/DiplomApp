@@ -24,10 +24,27 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private val client = OkHttpClient()
 
+    val temperatureList = mutableListOf<String>()
+
     private val _temperatureLiveData = MutableLiveData<String?>()
     val temperatureLiveData: MutableLiveData<String?>
         get() = _temperatureLiveData
 
+    private lateinit var temperatureUpdateThread: TemperatureUpdateThread
+
+    init {
+        startTemperatureUpdates()
+    }
+
+    private fun startTemperatureUpdates() {
+        temperatureUpdateThread = TemperatureUpdateThread(this)
+        temperatureUpdateThread.start()
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        temperatureUpdateThread.stopThread()
+    }
 
     fun setConnection(){
         viewModelScope.launch {
@@ -76,9 +93,11 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     private suspend fun sendRequest(message: String){
+
         val request = Request.Builder()
             .url("http://192.168.4.1/$message")
             .build()
+
         return withContext(Dispatchers.IO) {
             try {
                 client.newCall(request).execute().use { response ->
@@ -86,13 +105,11 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                         throw IOException("Запрос к серверу не был успешен:" +
                                 " ${response.code} ${response.message}")
                     }
-                    // пример получения конкретного заголовка ответа
-                    println("Server: ${response.header("Server")}")
-                    // вывод тела ответа
-                    println(response.body!!.string())
+
+                    Log.d("Server:", "Response Body: ${response.code}")
                 }
             } catch (e: IOException) {
-                println("Ошибка подключения: $e");
+                Log.d("Server:", "Ошибка подключения")
             }
         }
     }
@@ -116,6 +133,9 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 Log.d("Response", "Response Body: $responseBody")
                 // Обработка полученного значения температуры
                 _temperatureLiveData.postValue(responseBody)
+                if (responseBody != null) {
+                    temperatureList.add(responseBody)
+                }
             }
         })
     }
