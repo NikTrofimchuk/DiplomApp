@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">Пайка</string>
 
-    <string name="graphs">Графики</string>
+    <string name="graphs">График</string>
     <string name="work">Пайка</string>
     <string name="WiFi_status">Статус Wi-FI:</string>
     <string name="Instrument_status">Статус паяльника:</string>

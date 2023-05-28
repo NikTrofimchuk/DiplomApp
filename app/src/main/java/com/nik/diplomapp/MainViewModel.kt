@@ -9,9 +9,14 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import androidx.room.Room
+import com.nik.diplomapp.data.DAO
+import com.nik.diplomapp.data.DataBase
+import com.nik.diplomapp.data.Entities.ProfileEntity
 import com.nik.diplomapp.utils.Constants.Companion.WiFi_PASSWORD
 import com.nik.diplomapp.utils.Constants.Companion.WiFi_SSID
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import okhttp3.*
@@ -24,6 +29,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private val client = OkHttpClient()
 
+    private val Dao : DAO
+
     val temperatureList = mutableListOf<String>()
 
     private val _temperatureLiveData = MutableLiveData<String?>()
@@ -33,7 +40,11 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private lateinit var temperatureUpdateThread: TemperatureUpdateThread
 
     init {
+        val appDatabase = Room.databaseBuilder(getApplication(), DataBase::class.java, "app-database").build()
         startTemperatureUpdates()
+        Dao = appDatabase.Dao()
+
+        val readProfiles: Flow<List<ProfileEntity>> = Dao.readProfiles()
     }
 
     private fun startTemperatureUpdates() {
@@ -55,6 +66,18 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     fun makeRequest(message: String){
         viewModelScope.launch{
             sendRequest(message)
+        }
+    }
+
+    fun insertProfiles(profile: ProfileEntity){
+        viewModelScope.launch{
+            Dao.insertProfiles(profile)
+        }
+    }
+
+    fun readProfiles(profile: ProfileEntity){
+        viewModelScope.launch{
+            Dao.readProfiles()
         }
     }
 

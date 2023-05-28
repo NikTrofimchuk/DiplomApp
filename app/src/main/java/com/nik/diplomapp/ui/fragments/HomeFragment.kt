@@ -14,6 +14,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.nik.diplomapp.MainViewModel
 import com.nik.diplomapp.R
+import com.nik.diplomapp.data.Entities.ProfileEntity
 import com.nik.diplomapp.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {
@@ -63,6 +64,24 @@ class HomeFragment : Fragment() {
         }
         binding.setTimeBtn.setOnClickListener(){
             findNavController().navigate(R.id.action_homeFragment_to_timerBottomSheet)
+        }
+        binding.templateBtn.setOnClickListener(){
+            var power = 0
+            val progress = binding.tempBar.progress
+
+            if (binding.btn10W.isChecked)power=10
+            if (binding.btn20W.isChecked)power=20
+            if (binding.btn30W.isChecked)power=30
+            if (binding.btn40W.isChecked)power=40
+            if (binding.btn50W.isChecked)power=50
+
+            val profile = ProfileEntity(
+                name = "$power W$progress °C",
+                temperature = progress,
+                power = power
+            )
+            profile.temperature = binding.tempBar.progress
+            viewModel.insertProfiles(profile)
         }
         viewModel.temperatureLiveData.observe(viewLifecycleOwner) { temperature ->
             Log.d("Temp updated", temperature.toString())
