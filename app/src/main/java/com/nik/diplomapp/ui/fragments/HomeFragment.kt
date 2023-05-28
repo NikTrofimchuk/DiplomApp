@@ -2,7 +2,6 @@ package com.nik.diplomapp.ui.fragments
 
 import android.os.Bundle
 import android.util.Log
-import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -10,11 +9,10 @@ import android.view.ViewGroup
 import android.widget.RadioButton
 import android.widget.SeekBar
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.nik.diplomapp.MainViewModel
 import com.nik.diplomapp.R
-import com.nik.diplomapp.data.Entities.ProfileEntity
+import com.nik.diplomapp.data.entities.ProfileEntity
 import com.nik.diplomapp.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {
@@ -25,7 +23,7 @@ class HomeFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProvider(this)[MainViewModel::class.java]
+        viewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -76,12 +74,12 @@ class HomeFragment : Fragment() {
             if (binding.btn50W.isChecked)power=50
 
             val profile = ProfileEntity(
-                name = "$power W$progress °C",
+                name = "$power W $progress °C",
                 temperature = progress,
                 power = power
             )
             profile.temperature = binding.tempBar.progress
-            viewModel.insertProfiles(profile)
+            viewModel.addInProfiles(profile)
         }
         viewModel.temperatureLiveData.observe(viewLifecycleOwner) { temperature ->
             Log.d("Temp updated", temperature.toString())

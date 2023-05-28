@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_homeFragment_to_timerBottomSheet"
             app:destination="@id/timerBottomSheet" />
+        <argument
+            android:name="profileSettings"
+            app:argType="com.nik.diplomapp.data.entities.ProfileEntity" />
     </fragment>
     <fragment
         android:id="@+id/navigation_graphs"
@@ -23,7 +26,11 @@
         android:id="@+id/navigation_profiles"
         android:name="com.nik.diplomapp.ui.fragments.ProfilesFragment"
         android:label="fragment_profiles"
-        tools:layout="@layout/fragment_profiles" />
+        tools:layout="@layout/fragment_profiles" >
+        <action
+            android:id="@+id/action_navigation_profiles_to_navigation_home"
+            app:destination="@id/navigation_home" />
+    </fragment>
     <fragment
         android:id="@+id/navigation_calibration"
         android:name="com.nik.diplomapp.ui.fragments.CalibrationFragment"

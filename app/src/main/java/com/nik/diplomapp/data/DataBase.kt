@@ -2,7 +2,7 @@ package com.nik.diplomapp.data
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.nik.diplomapp.data.Entities.ProfileEntity
+import com.nik.diplomapp.data.entities.ProfileEntity
 
 @Database(
     entities = [ProfileEntity::class],
@@ -12,6 +12,6 @@ import com.nik.diplomapp.data.Entities.ProfileEntity
 
 abstract class DataBase: RoomDatabase() {
 
-    abstract fun Dao(): DAO
+    abstract fun appDao(): AppDAO
 
 }

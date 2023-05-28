@@ -1,4 +1,4 @@
-package com.nik.diplomapp.data.Entities
+package com.nik.diplomapp.data.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

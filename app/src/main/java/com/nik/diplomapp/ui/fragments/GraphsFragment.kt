@@ -12,14 +12,9 @@ import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
-import com.github.mikephil.charting.formatter.ValueFormatter
-import com.github.mikephil.charting.utils.ColorTemplate
 import com.github.mikephil.charting.utils.ColorTemplate.getHoloBlue
-import com.github.mikephil.charting.utils.ColorTemplate.rgb
 import com.nik.diplomapp.MainViewModel
-import com.nik.diplomapp.R
 import com.nik.diplomapp.databinding.FragmentGraphsBinding
-
 
 class GraphsFragment : Fragment() {
 
@@ -31,7 +26,7 @@ class GraphsFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProvider(this)[MainViewModel::class.java]
+        viewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
     }
 
     override fun onCreateView(

@@ -16,4 +16,7 @@
     <string name="Connected">Подключено</string>
     <string name="Not_connected">Не подключено</string>
     <string name="calibration">Калибровка</string>
+    <string name="edit_dialog_title">Редактировать значение</string>
+    <string name="save">Сохранить</string>
+    <string name="cancel">Отмена</string>
 </resources>

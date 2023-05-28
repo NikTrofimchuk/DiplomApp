@@ -20,5 +20,8 @@
     <string name="Connected">Connected</string>
     <string name="Not_connected">No Connection</string>
 
+    <string name="edit_dialog_title">Edit value</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
 
 </resources>

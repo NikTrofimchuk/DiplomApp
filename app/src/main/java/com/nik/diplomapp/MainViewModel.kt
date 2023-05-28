@@ -5,31 +5,29 @@ import android.app.Application
 import android.net.wifi.WifiConfiguration
 import android.net.wifi.WifiManager
 import android.util.Log
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
-import androidx.room.Room
-import com.nik.diplomapp.data.DAO
-import com.nik.diplomapp.data.DataBase
-import com.nik.diplomapp.data.Entities.ProfileEntity
+import androidx.hilt.lifecycle.ViewModelInject
+import androidx.lifecycle.*
+import com.nik.diplomapp.data.entities.ProfileEntity
+import com.nik.diplomapp.data.Repository
 import com.nik.diplomapp.utils.Constants.Companion.WiFi_PASSWORD
 import com.nik.diplomapp.utils.Constants.Companion.WiFi_SSID
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import okhttp3.*
 import java.io.IOException
 
 
-class MainViewModel(application: Application) : AndroidViewModel(application) {
+class MainViewModel@ViewModelInject constructor(
+    private val repository: Repository,
+    application: Application
+) : AndroidViewModel(application) {
 
     private lateinit var wifiManager: WifiManager
 
     private val client = OkHttpClient()
 
-    private val Dao : DAO
+    val readProfiles: LiveData<List<ProfileEntity>> = repository.local.readProfiles().asLiveData()
 
     val temperatureList = mutableListOf<String>()
 
@@ -40,11 +38,35 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private lateinit var temperatureUpdateThread: TemperatureUpdateThread
 
     init {
-        val appDatabase = Room.databaseBuilder(getApplication(), DataBase::class.java, "app-database").build()
-        startTemperatureUpdates()
-        Dao = appDatabase.Dao()
+        //startTemperatureUpdates()
+    }
 
-        val readProfiles: Flow<List<ProfileEntity>> = Dao.readProfiles()
+    fun addInProfiles(profile: ProfileEntity){
+        insertProfiles(profile)
+    }
+
+    fun deleteProfile(name: String){
+        deleteFromProfiles(name)
+    }
+
+    fun updateInProfile(name:String, oldName:String){
+        updateProfile(name, oldName)
+    }
+
+    private fun insertProfiles(profile: ProfileEntity) =
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.local.insertProfiles(profile)
+        }
+
+    private fun deleteFromProfiles(name: String) =
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.local.deleteFromProfiles(name)
+        }
+
+    private fun updateProfile(name:String, oldName:String){
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.local.updateProfile(name, oldName)
+        }
     }
 
     private fun startTemperatureUpdates() {
@@ -66,18 +88,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     fun makeRequest(message: String){
         viewModelScope.launch{
             sendRequest(message)
-        }
-    }
-
-    fun insertProfiles(profile: ProfileEntity){
-        viewModelScope.launch{
-            Dao.insertProfiles(profile)
-        }
-    }
-
-    fun readProfiles(profile: ProfileEntity){
-        viewModelScope.launch{
-            Dao.readProfiles()
         }
     }
 
