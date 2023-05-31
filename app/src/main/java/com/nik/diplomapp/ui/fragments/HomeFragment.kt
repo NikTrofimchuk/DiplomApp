@@ -1,6 +1,7 @@
 package com.nik.diplomapp.ui.fragments
 
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -8,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioButton
 import android.widget.SeekBar
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.nik.diplomapp.MainViewModel
@@ -16,6 +18,11 @@ import com.nik.diplomapp.data.entities.ProfileEntity
 import com.nik.diplomapp.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {
+
+    private var temperature: Int? = null
+    private var seconds: Int? = null
+    private var power: Int? = null
+    private var instrument = false
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
@@ -37,25 +44,86 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        instrument = viewModel.insrument_status
+
+        seconds = arguments?.getInt("seconds")
+        temperature = arguments?.getInt("temperature")
+        power = arguments?.getInt("power")
+
+        Log.d("seconds:", seconds.toString())
+        if (seconds != 0){
+            viewModel.startTimer(seconds,temperature)
+        }
+
+        viewModel.timeLiveData.observe(viewLifecycleOwner) { timeString ->
+            if(timeString == "00:00")binding.timerTv.text = ""
+            else binding.timerTv.text = timeString
+        }
+
+        if (temperature != 0 && power != 0){
+            if (power == 10){
+                binding.btn10W.isChecked = true
+                viewModel.makeRequest("power?value=51")
+            }
+            if (power == 20){
+                binding.btn20W.isChecked = true
+                viewModel.makeRequest("power?value=102")
+            }
+            if (power == 30){
+                binding.btn30W.isChecked = true
+                viewModel.makeRequest("power?value=153")
+            }
+            if (power == 40){
+                binding.btn40W.isChecked = true
+                viewModel.makeRequest("power?value=204")
+            }
+            if (power == 50){
+                binding.btn50W.isChecked = true
+                viewModel.makeRequest("power?value=255")
+            }
+            if (temperature != null) {
+                binding.tempBar.progress = temperature as Int
+
+                viewModel.makeRequest("fixtemp?value="+temperature.toString())
+                setTextViewPosition(binding.tempBar)
+            }
+        }
+
+        binding.powerButton.setOnClickListener(){
+            if(viewModel.insrument_status){
+                binding.powerButton.setImageResource(R.drawable.ic_baseline_power_settings_new_24)
+                viewModel.makeRequest("on/off")
+                viewModel.insrument_status = false
+            }
+            else{
+                binding.powerButton.setImageResource(R.drawable.ic_baseline_power_settings_new_48)
+                viewModel.makeRequest("on/off")
+                viewModel.insrument_status = true
+            }
+        }
+
         binding.radioGroup.setOnCheckedChangeListener { group, checkedId ->
-            group.findViewById<RadioButton>(checkedId)
-            when (checkedId) {
-                R.id.btn_10W -> {
-                    viewModel.makeRequest("power?value=51")
-                }
-                R.id.btn_20W -> {
-                    viewModel.makeRequest("power?value=102")
-                }
-                R.id.btn_30W -> {
-                    viewModel.makeRequest("power?value=153")
-                }
-                R.id.btn_40W -> {
-                    viewModel.makeRequest("power?value=204")
-                }
-                R.id.btn_50W -> {
-                    viewModel.makeRequest("power?value=255")
+            if(viewModel.insrument_status){
+                group.findViewById<RadioButton>(checkedId)
+                when (checkedId) {
+                    R.id.btn_10W -> {
+                        viewModel.makeRequest("power?value=51")
+                    }
+                    R.id.btn_20W -> {
+                        viewModel.makeRequest("power?value=102")
+                    }
+                    R.id.btn_30W -> {
+                        viewModel.makeRequest("power?value=153")
+                    }
+                    R.id.btn_40W -> {
+                        viewModel.makeRequest("power?value=204")
+                    }
+                    R.id.btn_50W -> {
+                        viewModel.makeRequest("power?value=255")
+                    }
                 }
             }
+            else Toast.makeText(context, "Включите устройство", Toast.LENGTH_SHORT).show()
         }
         binding.WiFiBtn.setOnClickListener(){
             viewModel.setConnection()
@@ -87,32 +155,31 @@ class HomeFragment : Fragment() {
         }
 
         binding.tempBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                val thumbOffset = seekBar?.thumbOffset ?: 0
-                val thumb = seekBar?.thumb
-                val thumbBounds = thumb?.bounds
+                override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+                    setTextViewPosition(seekBar)
+                    binding.fixedTempTv.text = progress.toString()
+                }
 
-                // Рассчитываем положение текста под ползунком
-                val textX = thumbBounds?.left?.toFloat() ?: (0f + thumbOffset.toFloat())
+                override fun onStartTrackingTouch(seekBar: SeekBar?) {
+                }
 
-                // Обновляем позицию текстового поля
-                if(textX > 100)
-                    binding.fixedTempTv.x = textX + 19
-                else
-                    binding.fixedTempTv.x = textX + 22
-
-                // Обновляем значение в текстовом поле
-                binding.fixedTempTv.text = progress.toString()
-            }
-
-            override fun onStartTrackingTouch(seekBar: SeekBar?) {
-                // Метод вызывается при начале перемещения ползунка
-            }
-
-            override fun onStopTrackingTouch(seekBar: SeekBar?) {
-                viewModel.makeRequest("fixtemp?value="+binding.tempBar.progress.toString())
-                Log.d("Request", "fixtemp?value="+binding.tempBar.progress.toString())
-            }
+                override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                    if(viewModel.insrument_status)
+                        viewModel.makeRequest("fixtemp?value="+binding.tempBar.progress.toString())
+                    else Toast.makeText(context, "Включите устройство", Toast.LENGTH_SHORT).show()
+                }
         })
+    }
+
+    private fun setTextViewPosition(seekBar: SeekBar){
+        val thumbOffset = seekBar.thumbOffset
+        val thumb = seekBar.thumb
+        val thumbBounds = thumb?.bounds
+        Log.d("thumbBounds", thumb.bounds.toString())
+
+        val textX = thumbBounds?.left?.toFloat() ?: (0f + thumbOffset.toFloat())
+
+        binding.fixedTempTv.x = textX + 22
+
     }
 }

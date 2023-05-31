@@ -2,10 +2,11 @@ package com.nik.diplomapp.data
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import com.nik.diplomapp.data.entities.HeatEntity
 import com.nik.diplomapp.data.entities.ProfileEntity
 
 @Database(
-    entities = [ProfileEntity::class],
+    entities = [ProfileEntity::class, HeatEntity::class],
     version = 1,
     exportSchema = false
 )

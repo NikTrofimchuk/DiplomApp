@@ -14,8 +14,14 @@
             android:id="@+id/action_homeFragment_to_timerBottomSheet"
             app:destination="@id/timerBottomSheet" />
         <argument
-            android:name="profileSettings"
-            app:argType="com.nik.diplomapp.data.entities.ProfileEntity" />
+            android:name="temperature"
+            app:argType="integer" />
+        <argument
+            android:name="power"
+            app:argType="integer" />
+        <argument
+            android:name="seconds"
+            app:argType="integer" />
     </fragment>
     <fragment
         android:id="@+id/navigation_graphs"

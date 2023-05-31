@@ -6,10 +6,16 @@
     android:layout_height="wrap_content">
 
     <SeekBar
-        android:id="@+id/seekBar"
-        android:layout_width="340dp"
+        android:id="@+id/timer_seekBar"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="62dp"
+        android:layout_marginEnd="16dp"
+        android:max="600"
+        android:min="100"
+        android:progressDrawable="@drawable/seekbar_bg"
+        android:thumb="@drawable/ic_baseline_hexagon_24"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="parent"
@@ -21,43 +27,47 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"
         android:text="@string/Choose_temp"
-        app:layout_constraintBottom_toTopOf="@+id/seekBar"
-        app:layout_constraintStart_toStartOf="@+id/seekBar"
+        app:layout_constraintBottom_toTopOf="@+id/timer_seekBar"
+        app:layout_constraintStart_toStartOf="@+id/timer_seekBar"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
 
     <EditText
         android:id="@+id/editTextTime"
-        android:layout_width="wrap_content"
+        android:layout_width="80dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="100dp"
         android:ems="10"
+        android:gravity="center"
         android:inputType="time"
-        app:layout_constraintBottom_toTopOf="@+id/button"
-        app:layout_constraintStart_toStartOf="@+id/seekBar" />
+        android:maxLength="2"
+        android:text="0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/timer_seekBar" />
 
     <TextView
         android:id="@+id/textView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:layout_marginBottom="24dp"
+        android:layout_marginTop="32dp"
         android:text="@string/Timer"
-        app:layout_constraintBottom_toTopOf="@+id/editTextTime"
-        app:layout_constraintStart_toStartOf="@+id/editTextTime"
-        app:layout_constraintTop_toBottomOf="@+id/seekBar" />
+        app:layout_constraintStart_toStartOf="@+id/timer_seekBar"
+        app:layout_constraintTop_toBottomOf="@+id/timer_seekBar" />
 
     <Button
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
         android:layout_marginBottom="16dp"
         android:backgroundTint="@color/orange"
         android:text="@string/Confirm"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextTime" />
 
     <TextView
         android:id="@+id/textView6"
@@ -70,5 +80,48 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/editTextTime2"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:ems="10"
+        android:gravity="center"
+        android:inputType="time"
+        android:maxLength="2"
+        android:text="0"
+        app:layout_constraintBottom_toBottomOf="@+id/editTextTime"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/editTextTime"
+        app:layout_constraintTop_toTopOf="@+id/editTextTime" />
+
+    <TextView
+        android:id="@+id/textView10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="Минуты:"
+        app:layout_constraintBottom_toTopOf="@+id/editTextTime"
+        app:layout_constraintEnd_toEndOf="@+id/editTextTime"
+        app:layout_constraintStart_toStartOf="@+id/editTextTime" />
+
+    <TextView
+        android:id="@+id/textView11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Секунды:"
+        app:layout_constraintEnd_toEndOf="@+id/editTextTime2"
+        app:layout_constraintStart_toStartOf="@+id/editTextTime2"
+        app:layout_constraintTop_toTopOf="@+id/textView10" />
+
+    <TextView
+        android:id="@+id/temp_tv_bar"
+        android:layout_width="49dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toStartOf="@+id/timer_seekBar"
+        app:layout_constraintTop_toBottomOf="@+id/timer_seekBar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

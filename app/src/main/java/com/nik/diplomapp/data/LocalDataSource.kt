@@ -1,5 +1,6 @@
 package com.nik.diplomapp.data
 
+import com.nik.diplomapp.data.entities.HeatEntity
 import com.nik.diplomapp.data.entities.ProfileEntity
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -22,5 +23,17 @@ class LocalDataSource @Inject constructor(
 
     suspend fun updateProfile(name: String, oldName:String){
         appDAO.updateProfile(name, oldName)
+    }
+
+    fun readHeat(): Flow<List<HeatEntity>> {
+        return appDAO.readHeat()
+    }
+
+    suspend fun insertHeat(heatEntity: HeatEntity) {
+        appDAO.insertHeat(heatEntity)
+    }
+
+    suspend fun deleteHeatTable() {
+        appDAO.deleteHeatTable()
     }
 }

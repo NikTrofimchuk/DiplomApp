@@ -7,5 +7,6 @@ class Constants {
         const val WiFi_PASSWORD = "11111111"
 
         const val PROFILES_TABLE = "profiles_table"
+        const val HEAT_TABLE = "heat_table"
     }
 }

@@ -52,7 +52,13 @@ class ProfilesFragment : Fragment(), ProfilesAdapter.OnItemClickListener {
     }
 
     override fun onActivateClick(profileEntity: ProfileEntity) {
-        findNavController().navigate(R.id.action_navigation_profiles_to_navigation_home)
+        val bundle = Bundle().apply {
+            putInt("temperature", profileEntity.temperature)
+            putInt("power", profileEntity.power)
+            putInt("seconds", 0)
+        }
+        findNavController().navigate(R.id.action_navigation_profiles_to_navigation_home, bundle)
+        Toast.makeText(context, "Шаблон активирован", Toast.LENGTH_SHORT).show()
     }
 
     override fun onEditClick(position: Int, name: String) {

@@ -4,11 +4,13 @@ import android.annotation.SuppressLint
 import android.app.Application
 import android.net.wifi.WifiConfiguration
 import android.net.wifi.WifiManager
+import android.os.CountDownTimer
 import android.util.Log
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import com.nik.diplomapp.data.entities.ProfileEntity
 import com.nik.diplomapp.data.Repository
+import com.nik.diplomapp.data.entities.HeatEntity
 import com.nik.diplomapp.utils.Constants.Companion.WiFi_PASSWORD
 import com.nik.diplomapp.utils.Constants.Companion.WiFi_SSID
 import kotlinx.coroutines.Dispatchers
@@ -27,10 +29,15 @@ class MainViewModel@ViewModelInject constructor(
 
     private val client = OkHttpClient()
 
+    private var countDownTimer: CountDownTimer? = null
+    var insrument_status = false
+
     val readProfiles: LiveData<List<ProfileEntity>> = repository.local.readProfiles().asLiveData()
+    val readHeat: LiveData<List<HeatEntity>> = repository.local.readHeat().asLiveData()
 
     val temperatureList = mutableListOf<String>()
 
+    val timeLiveData: MutableLiveData<String> = MutableLiveData()
     private val _temperatureLiveData = MutableLiveData<String?>()
     val temperatureLiveData: MutableLiveData<String?>
         get() = _temperatureLiveData
@@ -38,15 +45,23 @@ class MainViewModel@ViewModelInject constructor(
     private lateinit var temperatureUpdateThread: TemperatureUpdateThread
 
     init {
-        //startTemperatureUpdates()
+        startTemperatureUpdates()
     }
 
     fun addInProfiles(profile: ProfileEntity){
         insertProfiles(profile)
     }
 
+    fun addInHeat(heat: HeatEntity){
+        insertHeat(heat)
+    }
+
     fun deleteProfile(name: String){
         deleteFromProfiles(name)
+    }
+
+    fun deleteHeat(){
+        deleteHeatTable()
     }
 
     fun updateInProfile(name:String, oldName:String){
@@ -58,6 +73,11 @@ class MainViewModel@ViewModelInject constructor(
             repository.local.insertProfiles(profile)
         }
 
+    private fun insertHeat(heat: HeatEntity) =
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.local.insertHeat(heat)
+        }
+
     private fun deleteFromProfiles(name: String) =
         viewModelScope.launch(Dispatchers.IO) {
             repository.local.deleteFromProfiles(name)
@@ -66,6 +86,12 @@ class MainViewModel@ViewModelInject constructor(
     private fun updateProfile(name:String, oldName:String){
         viewModelScope.launch(Dispatchers.IO) {
             repository.local.updateProfile(name, oldName)
+        }
+    }
+
+    private fun deleteHeatTable(){
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.local.deleteHeatTable()
         }
     }
 
@@ -89,6 +115,27 @@ class MainViewModel@ViewModelInject constructor(
         viewModelScope.launch{
             sendRequest(message)
         }
+    }
+
+    fun startTimer(seconds: Int?, temp: Int?) {
+        countDownTimer?.cancel()
+
+        countDownTimer = object : CountDownTimer((seconds?.toLong() ?: 0) * 1000, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                val totalSeconds = (millisUntilFinished / 1000).toInt()
+                val minutes = totalSeconds / 60
+                val seconds = totalSeconds % 60
+                val timeString = String.format("%02d:%02d", minutes, seconds)
+                timeLiveData.value = timeString
+            }
+
+            override fun onFinish() {
+                makeRequest("power?value=255")
+                makeRequest("fixtemp?value=$temp")
+            }
+        }
+
+        countDownTimer?.start()
     }
 
     private suspend fun connectToWiFi(){
